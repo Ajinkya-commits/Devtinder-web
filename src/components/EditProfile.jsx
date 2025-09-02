@@ -6,30 +6,49 @@ import { BASE_URL } from "../../utils/constants";
 import { addUser } from "../../utils/userSlice";
 
 const EditProfile = ({ user }) => {
-  const [firstName, setFirstName] = useState(user.firstName);
-  const [lastName, setLastName] = useState(user.lastName);
-  const [age, setAge] = useState(user.age);
-  const [gender, setGender] = useState(user.gender);
-  const [about, setAbout] = useState(user.about);
-  const [photoUrl, setPhotoUrl] = useState(user.photoUrl);
+  const [firstName, setFirstName] = useState(user.firstName || "");
+  const [lastName, setLastName] = useState(user.lastName || "");
+  const [age, setAge] = useState(user.age || "");
+  const [gender, setGender] = useState(user.gender || "");
+  const [about, setAbout] = useState(user.about || "");
+  const [photoUrl, setPhotoUrl] = useState(user.photoUrl || "");
   const [error, setError] = useState("");
   const dispatch = useDispatch();
 
   const saveProfile = async () => {
-    try {
-      const res = await axios.patch(
-        BASE_URL + "/profile/edit",
-        { firstName, lastName, photoUrl, age, gender, about },
-        { withCredentials: true }
-      );
-      console.log(res?.data?.data);
+  try {
+    const res = await axios.patch(
+      BASE_URL + "/profile/edit",
+      { 
+        firstName, 
+        lastName, 
+        photoUrl, 
+        age: age ? Number(age) : null, 
+        gender, 
+        about 
+      },
+      {
+        withCredentials: true,
+        headers: { "Content-Type": "application/json" },
+      }
+    );
 
-      dispatch(addUser(res.data));
-    } catch (error) {
-      console.log(error);
-      setError(error);
-    }
-  };
+    console.log("Updated User =>", res.data.data);
+    dispatch(addUser(res.data.data));
+    setError("");
+  } catch (err) {
+    console.error(err);
+    setError(
+      typeof err.response?.data === "string"
+        ? err.response.data
+        : err.response?.data?.error ||
+          err.response?.data?.message ||
+          err.message ||
+          "Something went wrong"
+    );
+  }
+};
+
 
   return (
     <div className="flex justify-center flex-wrap">
@@ -37,8 +56,9 @@ const EditProfile = ({ user }) => {
         <div className="card bg-base-300 w-96 shadow-sm">
           <div className="card-body">
             <h2 className="card-title justify-center">Edit Profile</h2>
+
             <fieldset className="fieldset">
-              <legend className="fieldset-legend">FirstName</legend>
+              <legend className="fieldset-legend">First Name</legend>
               <input
                 type="text"
                 className="input"
@@ -46,8 +66,9 @@ const EditProfile = ({ user }) => {
                 onChange={(e) => setFirstName(e.target.value)}
               />
             </fieldset>
+
             <fieldset className="fieldset">
-              <legend className="fieldset-legend">LastName</legend>
+              <legend className="fieldset-legend">Last Name</legend>
               <input
                 type="text"
                 className="input"
@@ -55,15 +76,17 @@ const EditProfile = ({ user }) => {
                 onChange={(e) => setLastName(e.target.value)}
               />
             </fieldset>
+
             <fieldset className="fieldset">
               <legend className="fieldset-legend">Age</legend>
               <input
-                type="text"
+                type="number"
                 className="input"
                 value={age}
                 onChange={(e) => setAge(e.target.value)}
               />
             </fieldset>
+
             <fieldset className="fieldset">
               <legend className="fieldset-legend">Gender</legend>
               <input
@@ -73,6 +96,7 @@ const EditProfile = ({ user }) => {
                 onChange={(e) => setGender(e.target.value)}
               />
             </fieldset>
+
             <fieldset className="fieldset">
               <legend className="fieldset-legend">About</legend>
               <input
@@ -82,8 +106,9 @@ const EditProfile = ({ user }) => {
                 onChange={(e) => setAbout(e.target.value)}
               />
             </fieldset>
+
             <fieldset className="fieldset">
-              <legend className="fieldset-legend">PhotoUrl</legend>
+              <legend className="fieldset-legend">Photo URL</legend>
               <input
                 type="text"
                 className="input"
@@ -91,6 +116,9 @@ const EditProfile = ({ user }) => {
                 onChange={(e) => setPhotoUrl(e.target.value)}
               />
             </fieldset>
+
+            {error && <p className="text-red-500 mt-2">{error}</p>}
+
             <div className="card-actions justify-center">
               <button onClick={saveProfile} className="btn btn-primary">
                 Save Profile
