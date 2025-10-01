@@ -31,19 +31,25 @@ const Connections = () => {
       <h1 className="text-bold text-white text-3xl pb-2">Connections</h1>
 
       {connections.map((connection) => {
-        const {_id, firstName, lastName, photoUrl, age, gender, about } =
+        const { _id, firstName, lastName, photoUrl, age, gender, about } =
           connection;
         return (
-          <div key={_id} className="flex p-4 rounded-lg bg-base-300 w-1/2 m-auto">
-            <div>
-              <img src={photoUrl} alt="" className="w-20 h-20 rounded-full" />
-            </div>
-            <div className="text-left mx-4">
+          <div
+            key={_id}
+            className="flex items-center gap-4 p-4 rounded-lg bg-base-300 sm:w-1/2 w-2/3 m-auto my-4"
+          >
+            <img
+              src={photoUrl}
+              alt={firstName}
+              className="w-20 h-20 rounded-full object-cover"
+            />
+
+            <div className="flex-1 text-left">
               <h2 className="font-bold text-xl">
                 {firstName + " " + lastName}
               </h2>
-              {age && gender && <p> {age + ", " + gender}</p>}
-              <p>{about}</p>
+              {age && gender && <p>{age + ", " + gender}</p>}
+              <p className="break-words">{about}</p>
             </div>
           </div>
         );
