@@ -15,9 +15,9 @@ const Navbar = () => {
         {},
         { withCredentials: true }
       );
-      
+
       dispatch(removeUser());
-     
+
       return navigate("/login");
     } catch (error) {
       console.log(error);
@@ -59,7 +59,7 @@ const Navbar = () => {
                   </Link>
                 </li>
                 <li>
-                  <a>Settings</a>
+                  <Link to="/connections">Connections</Link>
                 </li>
                 <li>
                   <a onClick={handleLogout}>Logout</a>

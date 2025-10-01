@@ -3,8 +3,10 @@ import Body from "./components/Body";
 import Profile from "./components/Profile";
 import Login from "./components/Login";
 import appStore from "../utils/appStore";
-import {Provider} from 'react-redux'
+import { Provider } from "react-redux";
 import Feed from "./components/Feed";
+import Connections from "./components/Connections";
+
 const App = () => {
   return (
     <>
@@ -14,6 +16,7 @@ const App = () => {
             <Route path="/" element={<Body />}>
               <Route path="/" element={<Feed />} />
               <Route path="login" element={<Login />} />
+              <Route path="connections" element={<Connections />} />
               {/* this login and profile are children routes of body so body should render them  */}
               <Route path="profile" element={<Profile />} />
             </Route>
