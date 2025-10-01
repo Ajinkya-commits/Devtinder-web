@@ -6,6 +6,7 @@ import appStore from "../utils/appStore";
 import { Provider } from "react-redux";
 import Feed from "./components/Feed";
 import Connections from "./components/Connections";
+import Requests from "./components/Requests";
 
 const App = () => {
   return (
@@ -19,6 +20,7 @@ const App = () => {
               <Route path="connections" element={<Connections />} />
               {/* this login and profile are children routes of body so body should render them  */}
               <Route path="profile" element={<Profile />} />
+              <Route path="requests" element={<Requests />} />
             </Route>
           </Routes>
         </BrowserRouter>
