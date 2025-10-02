@@ -8,8 +8,6 @@ const Requests = () => {
   const requests = useSelector((store) => store.requests);
   const dispatch = useDispatch();
 
-  const [showButtons, setShowButtons] = useState(true);
-
   const reviewRequest = async (status, _id) => {
     try {
       const res = axios.post(
